@@ -1,0 +1,20 @@
+@model Lead
+<div class="page-heading"><h1 class="h3">@ViewData["Title"]</h1><a class="btn btn-outline-secondary" asp-action="Index">Back</a></div>
+<div class="panel">
+<form method="post">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div><input type="hidden" asp-for="LeadId" />
+<div class="form-grid">
+<div><label asp-for="LeadCode" class="form-label"></label><input asp-for="LeadCode" class="form-control" /><span asp-validation-for="LeadCode"></span></div>
+<div><label asp-for="LeadName" class="form-label"></label><input asp-for="LeadName" class="form-control" /><span asp-validation-for="LeadName"></span></div>
+<div><label asp-for="Email" class="form-label"></label><input asp-for="Email" class="form-control" /><span asp-validation-for="Email"></span></div>
+<div><label asp-for="Phone" class="form-label"></label><input asp-for="Phone" class="form-control" /><span asp-validation-for="Phone"></span></div>
+<div><label asp-for="CompanyName" class="form-label"></label><input asp-for="CompanyName" class="form-control" /><span asp-validation-for="CompanyName"></span></div>
+<div><label asp-for="Source" class="form-label"></label><select asp-for="Source" class="form-select" asp-items="@(new SelectList(CrmLookups.LeadSources))"></select><span asp-validation-for="Source"></span></div>
+<div><label asp-for="Status" class="form-label"></label><select asp-for="Status" class="form-select" asp-items="@(new SelectList(CrmLookups.LeadStatuses))"></select><span asp-validation-for="Status"></span></div>
+<div><label asp-for="Priority" class="form-label"></label><select asp-for="Priority" class="form-select" asp-items="@(new SelectList(CrmLookups.LeadPriorities))"></select><span asp-validation-for="Priority"></span></div>
+<div><label asp-for="ExpectedValue" class="form-label"></label><input asp-for="ExpectedValue" class="form-control" /><span asp-validation-for="ExpectedValue"></span></div>
+<div><label asp-for="AssignedTo" class="form-label"></label><select asp-for="AssignedTo" class="form-select" asp-items="ViewBag.Owners"></select><span asp-validation-for="AssignedTo"></span></div>
+</div>
+<div class="mt-3"><label asp-for="Notes" class="form-label"></label><textarea asp-for="Notes" class="form-control" rows="3"></textarea><span asp-validation-for="Notes"></span></div>
+<button class="btn btn-primary mt-3">Save</button>
+</form></div>

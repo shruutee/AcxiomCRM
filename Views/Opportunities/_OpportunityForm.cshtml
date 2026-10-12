@@ -1,0 +1,16 @@
+@model Opportunity
+<div class="page-heading"><h1 class="h3">@ViewData["Title"]</h1><a class="btn btn-outline-secondary" asp-action="Index">Back</a></div>
+<div class="panel"><form method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><input type="hidden" asp-for="OpportunityId" /><div class="form-grid">
+<div><label asp-for="OpportunityName" class="form-label"></label><input asp-for="OpportunityName" class="form-control" /><span asp-validation-for="OpportunityName"></span></div>
+<div><label asp-for="CustomerId" class="form-label"></label><select asp-for="CustomerId" class="form-select" asp-items="ViewBag.Customers"><option value="">Choose customer</option></select><span asp-validation-for="CustomerId"></span></div>
+<div><label asp-for="LeadId" class="form-label"></label><select asp-for="LeadId" class="form-select" asp-items="ViewBag.Leads"><option value="">No lead</option></select><span asp-validation-for="LeadId"></span></div>
+<div><label asp-for="Amount" class="form-label"></label><input asp-for="Amount" class="form-control" /><span asp-validation-for="Amount"></span></div>
+<div><label asp-for="Probability" class="form-label"></label><input asp-for="Probability" class="form-control" /><span asp-validation-for="Probability"></span></div>
+<div><label asp-for="ExpectedCloseDate" class="form-label"></label><input asp-for="ExpectedCloseDate" class="form-control" type="date" /><span asp-validation-for="ExpectedCloseDate"></span></div>
+<div><label asp-for="Stage" class="form-label"></label><select asp-for="Stage" class="form-select" asp-items="@(new SelectList(CrmLookups.OpportunityStages))"></select><span asp-validation-for="Stage"></span></div>
+<div><label asp-for="Status" class="form-label"></label><select asp-for="Status" class="form-select" asp-items="@(new SelectList(CrmLookups.OpportunityStatuses))"></select><span asp-validation-for="Status"></span></div>
+<div><label asp-for="Source" class="form-label"></label><select asp-for="Source" class="form-select" asp-items="@(new SelectList(CrmLookups.OpportunitySources))"></select><span asp-validation-for="Source"></span></div>
+<div><label asp-for="AssignedTo" class="form-label"></label><select asp-for="AssignedTo" class="form-select" asp-items="ViewBag.Owners"></select><span asp-validation-for="AssignedTo"></span></div>
+</div>
+<div class="mt-3"><label asp-for="Notes" class="form-label"></label><textarea asp-for="Notes" class="form-control" rows="3"></textarea><span asp-validation-for="Notes"></span></div>
+<button class="btn btn-primary mt-3">Save</button></form></div>

@@ -1,0 +1,77 @@
+@model DashboardViewModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="page-heading">
+    <div>
+        <h1 class="h3 mb-1">Dashboard</h1>
+        <p class="text-muted mb-0">Role-scoped CRM performance, pipeline, and activity health.</p>
+    </div>
+    <form class="row g-2 align-items-end" method="get">
+        <div class="col-auto">
+            <select class="form-select" name="filter">
+                @if (Model.DateFilter == "today") { <option value="today" selected>Today</option> } else { <option value="today">Today</option> }
+                @if (Model.DateFilter == "week") { <option value="week" selected>This Week</option> } else { <option value="week">This Week</option> }
+                @if (Model.DateFilter == "month") { <option value="month" selected>This Month</option> } else { <option value="month">This Month</option> }
+                @if (Model.DateFilter == "custom") { <option value="custom" selected>Custom Range</option> } else { <option value="custom">Custom Range</option> }
+            </select>
+        </div>
+        <div class="col-auto"><input class="form-control" type="date" name="start" value="@Model.StartDate.ToString("yyyy-MM-dd")" /></div>
+        <div class="col-auto"><input class="form-control" type="date" name="end" value="@Model.EndDate.ToString("yyyy-MM-dd")" /></div>
+        <div class="col-auto"><button class="btn btn-outline-primary">Apply</button></div>
+    </form>
+</div>
+<div class="row g-3 mb-3">
+    <div class="col-md-3"><div class="metric"><div class="label">Total Customers</div><div class="value">@Model.TotalCustomers</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Total Leads</div><div class="value">@Model.TotalLeads</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Open Opportunities</div><div class="value">@Model.OpenOpportunities</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Pipeline Value</div><div class="value">@Model.TotalPipelineValue.ToString("C0")</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Open Leads</div><div class="value">@Model.OpenLeads</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Total Opportunities</div><div class="value">@Model.TotalOpportunities</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Won Opportunities</div><div class="value">@Model.WonOpportunities</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Lost Opportunities</div><div class="value">@Model.LostOpportunities</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Pending Follow-Ups</div><div class="value">@Model.PendingFollowUps</div></div></div>
+    <div class="col-md-3"><div class="metric"><div class="label">Overdue Follow-Ups</div><div class="value">@Model.OverdueFollowUps</div></div></div>
+</div>
+<div class="row g-3">
+    <div class="col-lg-4"><div class="panel chart-box"><h2 class="h5">Lead Status</h2><canvas id="leadChart"></canvas></div></div>
+    <div class="col-lg-4"><div class="panel chart-box"><h2 class="h5">Opportunity Pipeline</h2><canvas id="stageChart"></canvas></div></div>
+    <div class="col-lg-4"><div class="panel chart-box"><h2 class="h5">Monthly Sales</h2><canvas id="salesChart"></canvas></div></div>
+</div>
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const charts = {
+  leadChart: @Html.Raw(JsonSerializer.Serialize(Model.LeadStatus)),
+  stageChart: @Html.Raw(JsonSerializer.Serialize(Model.OpportunityPipeline)),
+  salesChart: @Html.Raw(JsonSerializer.Serialize(Model.MonthlySales))
+};
+const palette = ['#0d6efd', '#198754', '#f59f00', '#dc3545', '#6f42c1', '#20c997'];
+function makeChart(id, data, type) {
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+  new Chart(document.getElementById(id), {
+    type,
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: labels.map((_, index) => palette[index % palette.length]),
+        borderColor: '#ffffff',
+        borderWidth: type === 'doughnut' ? 2 : 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: type === 'doughnut' ? 'bottom' : 'top' } },
+      scales: type === 'bar' ? { y: { beginAtZero: true } } : {}
+    }
+  });
+}
+makeChart('leadChart', charts.leadChart, 'doughnut');
+makeChart('stageChart', charts.stageChart, 'bar');
+makeChart('salesChart', charts.salesChart, 'bar');
+</script>
+}

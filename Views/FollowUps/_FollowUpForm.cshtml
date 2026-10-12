@@ -1,0 +1,11 @@
+@model FollowUp
+<div class="page-heading"><h1 class="h3">@ViewData["Title"]</h1><a class="btn btn-outline-secondary" asp-action="Index">Back</a></div>
+<div class="panel"><form method="post"><div asp-validation-summary="ModelOnly" class="text-danger"></div><input type="hidden" asp-for="FollowUpId" /><div class="form-grid">
+<div><label asp-for="CustomerId" class="form-label"></label><select asp-for="CustomerId" class="form-select" asp-items="ViewBag.Customers"><option value="">No customer</option></select><span asp-validation-for="CustomerId"></span></div>
+<div><label asp-for="LeadId" class="form-label"></label><select asp-for="LeadId" class="form-select" asp-items="ViewBag.Leads"><option value="">No lead</option></select><span asp-validation-for="LeadId"></span></div>
+<div><label asp-for="OpportunityId" class="form-label"></label><select asp-for="OpportunityId" class="form-select" asp-items="ViewBag.Opportunities"><option value="">No opportunity</option></select><span asp-validation-for="OpportunityId"></span></div>
+<div><label asp-for="FollowUpDate" class="form-label"></label><input asp-for="FollowUpDate" type="date" class="form-control" /><span asp-validation-for="FollowUpDate"></span></div>
+<div><label asp-for="FollowUpType" class="form-label"></label><select asp-for="FollowUpType" class="form-select" asp-items="@(new SelectList(CrmLookups.FollowUpTypes))"></select><span asp-validation-for="FollowUpType"></span></div>
+<div><label asp-for="Status" class="form-label"></label><select asp-for="Status" class="form-select" asp-items="@(new SelectList(CrmLookups.FollowUpStatuses))"></select><span asp-validation-for="Status"></span></div>
+<div><label asp-for="AssignedTo" class="form-label"></label><select asp-for="AssignedTo" class="form-select" asp-items="ViewBag.Owners"></select><span asp-validation-for="AssignedTo"></span></div>
+</div><div class="mt-3"><label asp-for="Subject" class="form-label"></label><input asp-for="Subject" class="form-control" /><span asp-validation-for="Subject"></span></div><div class="mt-3"><label asp-for="Remarks" class="form-label"></label><textarea asp-for="Remarks" class="form-control"></textarea><span asp-validation-for="Remarks"></span></div><button class="btn btn-primary mt-3">Save</button></form></div>
